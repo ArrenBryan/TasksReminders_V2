@@ -9,7 +9,7 @@
         android:id="@+id/navigation_tasks"
         android:name="com.example.tasksreminders.ui.tasks.TasksFragment"
         android:label="Tasks"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_tasks" />
 
     <fragment
         android:id="@+id/navigation_profile"

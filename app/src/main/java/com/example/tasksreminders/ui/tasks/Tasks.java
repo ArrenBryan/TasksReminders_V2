@@ -5,7 +5,7 @@ public class Tasks {
     private String description;
     private String deadline;
 
-    public Tasks (String name, String deadline, String description) {
+    public Tasks(String name, String deadline, String description) {
         this.name = name;
         this.deadline = deadline;
         this.description = description;
