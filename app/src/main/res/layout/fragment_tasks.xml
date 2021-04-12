@@ -14,6 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10sp"
+        android:layout_marginTop="10sp"
         android:textSize="30sp"
         android:textStyle="bold"
         android:text="To Do Tasks!" />
@@ -22,5 +23,5 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="100dp"/>
+        android:paddingBottom="45dp"/>
 </LinearLayout>
