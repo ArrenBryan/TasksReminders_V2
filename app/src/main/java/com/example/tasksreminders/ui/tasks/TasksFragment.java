@@ -26,6 +26,8 @@ public class TasksFragment extends Fragment {
         datas.add(new Tasks("PPL", "02-04-2000", "Membuat IOT"));
         datas.add(new Tasks("AndroidProgramming", "01-04-2000", "Membuat sistem berbasis Android"));
         datas.add(new Tasks("PKN", "01-04-2000", "Membuat makalah tentang sejarah Indonesia"));
+        datas.add(new Tasks("MTK", "31-08-2001", "Membuat program Citra Digital"));
+        datas.add(new Tasks("OOP", "23-03-2012", "Membuat program ATM"));
 
         recyclerView.setAdapter(new TasksListAdapter(datas));
 
