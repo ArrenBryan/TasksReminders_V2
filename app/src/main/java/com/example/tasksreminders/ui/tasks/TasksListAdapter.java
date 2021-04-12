@@ -11,29 +11,18 @@ import java.util.ArrayList;
 public class TasksListAdapter extends RecyclerView.Adapter<TasksListAdapter.ViewHolder> {
 
     private final ArrayList<Tasks> datas;
+    private OnNoteListener onNoteListener;
 
-    public TasksListAdapter(ArrayList<Tasks> datas) {
+    public TasksListAdapter(ArrayList<Tasks> datas, OnNoteListener onNoteListener) {
         this.datas = datas;
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView name;
-        public final TextView description;
-        public final TextView deadline;
-
-        public ViewHolder(View view) {
-            super(view);
-            name = (TextView) view.findViewById(R.id.textName);
-            description = (TextView) view.findViewById(R.id.textDescription);
-            deadline = (TextView)view.findViewById(R.id.textDeadline);
-        }
+        this.onNoteListener = onNoteListener;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.viewholder_tasks, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(view, onNoteListener);
     }
 
     @Override
@@ -46,5 +35,31 @@ public class TasksListAdapter extends RecyclerView.Adapter<TasksListAdapter.View
     @Override
     public int getItemCount() {
         return datas.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public final TextView name;
+        public final TextView description;
+        public final TextView deadline;
+        OnNoteListener onNoteListener;
+
+        public ViewHolder(View view, OnNoteListener onNoteListener) {
+            super(view);
+            name = (TextView) view.findViewById(R.id.textName);
+            description = (TextView) view.findViewById(R.id.textDescription);
+            deadline = (TextView)view.findViewById(R.id.textDeadline);
+            this.onNoteListener = onNoteListener;
+
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            onNoteListener.onNoteClick(getAdapterPosition());
+        }
+    }
+
+    public interface OnNoteListener {
+        void onNoteClick(int position);
     }
 }
