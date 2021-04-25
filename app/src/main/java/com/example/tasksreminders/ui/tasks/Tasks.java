@@ -1,6 +1,10 @@
 package com.example.tasksreminders.ui.tasks;
 
-public class Tasks {
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class Tasks implements Comparable {
     private String name;
     private String description;
     private String deadline;
@@ -33,5 +37,31 @@ public class Tasks {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        Date strDate1, strDate2;
+
+        try {
+            strDate1 = sdf.parse(deadline);
+            strDate2 = sdf.parse(((Tasks) o).getDeadline());
+
+            if (strDate1.after(strDate2)) {
+                return 1;
+            }
+
+            else if (strDate1.before(strDate2)) {
+                return -1;
+            }
+
+            return 0;
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
     }
 }

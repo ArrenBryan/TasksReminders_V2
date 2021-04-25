@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.tasksreminders.R;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class TasksFragment extends Fragment implements TasksListAdapter.OnNoteListener {
 
@@ -23,13 +24,14 @@ public class TasksFragment extends Fragment implements TasksListAdapter.OnNoteLi
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        datas.add(new Tasks("APSI", "01-04-2000", "Membuat DFD"));
-        datas.add(new Tasks("PPL", "02-04-2000", "Membuat IOT"));
+        datas.add(new Tasks("APSI", "01-04-2020", "Membuat DFD"));
+        datas.add(new Tasks("PPL", "02-04-2023", "Membuat IOT"));
         datas.add(new Tasks("AndroidProgramming", "01-04-2000", "Membuat sistem berbasis Android"));
         datas.add(new Tasks("PKN", "01-04-2000", "Membuat makalah tentang sejarah Indonesia"));
         datas.add(new Tasks("MTK", "31-08-2001", "Membuat program Citra Digital"));
         datas.add(new Tasks("OOP", "23-03-2012", "Membuat program ATM"));
 
+        Collections.sort(datas);
         recyclerView.setAdapter(new TasksListAdapter(datas, this));
 
         return view;
