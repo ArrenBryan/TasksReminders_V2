@@ -28,4 +28,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/mobile_navigation" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:contentDescription="Test"
+        android:src="@drawable/ic_baseline_add_24"
+        android:layout_marginBottom="75dp"
+        android:layout_marginRight="30sp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
