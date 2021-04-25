@@ -5,13 +5,13 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
         <TextView
             android:id="@+id/textName"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Nama Tugas"
             android:textSize="20sp"
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Deadline"
-            android:layout_marginLeft="10dp"
+            android:gravity="end"
             android:textColor="@color/red"/>
     </LinearLayout>
 
