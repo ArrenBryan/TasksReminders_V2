@@ -1,44 +1,80 @@
 package com.example.tasksreminders.ui.tasks;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.tasksreminders.R;
-import java.util.ArrayList;
-import java.util.Collections;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.List;
 
 public class TasksFragment extends Fragment implements TasksListAdapter.OnNoteListener {
 
-    private RecyclerView recyclerView;
-    private ArrayList<Tasks> datas = new ArrayList<>();
+    public static final int NEW_WORD_ACTIVITY_REQUEST_CODE = 1;
+    private TasksViewModel mTasksViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tasks, container, false);
+
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        TasksListAdapter adapter = new TasksListAdapter(new TasksListAdapter.TasksDiff(), this);
+        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        datas.add(new Tasks("APSI", "01-04-2020", "Membuat DFD"));
-        datas.add(new Tasks("PPL", "02-04-2023", "Membuat IOT"));
-        datas.add(new Tasks("AndroidProgramming", "01-04-2000", "Membuat sistem berbasis Android"));
-        datas.add(new Tasks("PKN", "01-04-2000", "Membuat makalah tentang sejarah Indonesia"));
-        datas.add(new Tasks("MTK", "31-08-2001", "Membuat program Citra Digital"));
-        datas.add(new Tasks("OOP", "23-03-2012", "Membuat program ATM"));
+        mTasksViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(TasksViewModel.class);
+        mTasksViewModel.getAllTasks().observe(getViewLifecycleOwner(), tasks -> {
+            // Update the cached copy of the words in the adapter.
+            adapter.submitList(tasks);
+        });
 
-        Collections.sort(datas);
-        recyclerView.setAdapter(new TasksListAdapter(datas, this));
+        FloatingActionButton fab = view.findViewById(R.id.fab);
+        fab.setOnClickListener( View -> {
+            Intent intent = new Intent(getContext(), InsertTasksActivity.class);
+            startActivityForResult(intent, NEW_WORD_ACTIVITY_REQUEST_CODE);
+        });
 
         return view;
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == NEW_WORD_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            Tasks tasks = new Tasks(
+                    data.getStringExtra(InsertTasksActivity.EXTRA_REPLY),
+                    data.getStringExtra("description"),
+                    data.getStringExtra("deadline")
+            );
+            mTasksViewModel.insert(tasks);
+            Toast.makeText(
+                    getContext(),
+                    R.string.data_saved,
+                    Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(
+                    getContext(),
+                    R.string.empty_not_saved,
+                    Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
     public void onNoteClick(int position) {
+        List<Tasks> datas = mTasksViewModel.getAllTasks().getValue();
+
         Intent intent = new Intent(this.getContext(), DetailTasksActivity.class);
         Bundle bundle = new Bundle();
 
