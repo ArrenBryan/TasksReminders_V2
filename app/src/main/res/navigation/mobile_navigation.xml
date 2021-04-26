@@ -8,12 +8,12 @@
     <fragment
         android:id="@+id/navigation_tasks"
         android:name="com.example.tasksreminders.ui.tasks.TasksFragment"
-        android:label="Tasks"
+        android:label="@string/title_tasks"
         tools:layout="@layout/fragment_tasks" />
 
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.example.tasksreminders.ui.profile.ProfileFragment"
-        android:label="Profile"
+        android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
 </navigation>

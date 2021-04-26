@@ -1,11 +1,11 @@
 package com.example.tasksreminders.ui.tasks;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tasksreminders.R;
@@ -16,6 +16,9 @@ public class DetailTasksActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailtasks);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(R.string.edit_task);
 
         Bundle bundle = getIntent().getExtras();
 
