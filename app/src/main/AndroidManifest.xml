@@ -20,6 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.tasks.DetailTasksActivity" />
+        <activity android:name=".ui.tasks.InsertTasksActivity" />
     </application>
 
 </manifest>
