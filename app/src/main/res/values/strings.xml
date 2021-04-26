@@ -4,7 +4,10 @@
     <string name="profile">Profile</string>
     <string name="title_tasks">Tasks To Do!</string>
     <string name="title_profile">Tasks Overview</string>
+    <string name="edit_task">Edit Task</string>
+    <string name="insert_task">Insert Task</string>
     <string name="completed_task">Completed Tasks</string>
     <string name="pending_task">Pending Tasks</string>
-    <string name="edit_task">Edit Task</string>
+    <string name="empty_not_saved">Tasks not saved because it is empty!</string>
+    <string name="data_saved">Tasks is successfully saved!</string>
 </resources>
