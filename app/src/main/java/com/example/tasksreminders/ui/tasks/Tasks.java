@@ -1,12 +1,24 @@
 package com.example.tasksreminders.ui.tasks;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
-public class Tasks implements Comparable {
+@Entity(tableName = "tasks_table")
+public class Tasks {
+
+    @PrimaryKey
+    @NonNull
+    @ColumnInfo(name = "tasks")
     private String name;
+
+    @NonNull
+    @ColumnInfo(name = "description")
     private String description;
+
+    @NonNull
+    @ColumnInfo(name = "deadline")
     private String deadline;
 
     public Tasks(String name, String deadline, String description) {
@@ -27,41 +39,15 @@ public class Tasks implements Comparable {
         return name;
     }
 
-    public void setDeadline(String deadline) {
+    public void setDeadline(@NonNull String deadline) {
         this.deadline = deadline;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(@NonNull String description) {
         this.description = description;
     }
 
-    public void setName(String name) {
+    public void setName(@NonNull String name) {
         this.name = name;
-    }
-
-    @Override
-    public int compareTo(Object o) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        Date strDate1, strDate2;
-
-        try {
-            strDate1 = sdf.parse(deadline);
-            strDate2 = sdf.parse(((Tasks) o).getDeadline());
-
-            if (strDate1.after(strDate2)) {
-                return 1;
-            }
-
-            else if (strDate1.before(strDate2)) {
-                return -1;
-            }
-
-            return 0;
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return 0;
     }
 }
