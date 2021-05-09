@@ -11,7 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Tasks.class}, version = 1, exportSchema = false)
+@Database(entities = {Tasks.class}, version = 2, exportSchema = false)
 public abstract class TasksRoomDatabase extends RoomDatabase {
     public abstract TasksDao tasksDao();
 
@@ -27,6 +27,7 @@ public abstract class TasksRoomDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             TasksRoomDatabase.class, "tasks_database")
                             .addCallback(sRoomDatabaseCallback)
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }

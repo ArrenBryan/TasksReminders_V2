@@ -8,17 +8,16 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "tasks_table")
 public class Tasks {
 
-    @PrimaryKey
+    @PrimaryKey (autoGenerate = true)
+    private int id;
+
     @NonNull
-    @ColumnInfo(name = "tasks")
     private String name;
 
     @NonNull
-    @ColumnInfo(name = "description")
     private String description;
 
     @NonNull
-    @ColumnInfo(name = "deadline")
     private String deadline;
 
     public Tasks(String name, String deadline, String description) {
@@ -39,15 +38,11 @@ public class Tasks {
         return name;
     }
 
-    public void setDeadline(@NonNull String deadline) {
-        this.deadline = deadline;
+    public int getId() {
+        return id;
     }
 
-    public void setDescription(@NonNull String description) {
-        this.description = description;
-    }
-
-    public void setName(@NonNull String name) {
-        this.name = name;
+    public void setId(int id) {
+        this.id = id;
     }
 }
