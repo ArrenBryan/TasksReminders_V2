@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="false"
-        android:layout_marginTop="425dp"
+        android:layout_marginTop="450dp"
         android:clickable="true"
         android:contentDescription="Test"
         android:src="@drawable/ic_baseline_add_24" />
