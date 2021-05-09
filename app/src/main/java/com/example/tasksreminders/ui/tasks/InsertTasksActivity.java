@@ -21,7 +21,6 @@ import com.example.tasksreminders.R;
 import java.util.Calendar;
 
 public class InsertTasksActivity extends AppCompatActivity {
-    public static final String EXTRA_REPLY = "com.example.android.wordlistsql.REPLY";
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
     private EditText mName;
@@ -107,9 +106,9 @@ public class InsertTasksActivity extends AppCompatActivity {
         button.setOnClickListener(view -> {
             Intent replyIntent = new Intent();
 
-            replyIntent.putExtra(EXTRA_REPLY, mName.getText().toString());
-            replyIntent.putExtra("description", mDeadline.getText().toString());
-            replyIntent.putExtra("deadline", mDescription.getText().toString());
+            replyIntent.putExtra("name", mName.getText().toString());
+            replyIntent.putExtra("deadline", mDeadline.getText().toString());
+            replyIntent.putExtra("description", mDescription.getText().toString());
 
             setResult(RESULT_OK, replyIntent);
 
