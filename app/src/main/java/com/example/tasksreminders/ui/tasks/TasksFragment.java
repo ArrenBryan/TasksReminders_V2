@@ -25,6 +25,7 @@ import java.util.List;
 public class TasksFragment extends Fragment implements TasksListAdapter.OnNoteListener {
 
     public static final int NEW_WORD_ACTIVITY_REQUEST_CODE = 1;
+    public static final int UPDATE_WORD_ACTIVITY_REQUEST_CODE = 2;
     private TasksViewModel mTasksViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -55,23 +56,23 @@ public class TasksFragment extends Fragment implements TasksListAdapter.OnNoteLi
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        List<Tasks> datas = mTasksViewModel.getAllTasks().getValue();
 
         if (requestCode == NEW_WORD_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             Tasks tasks = new Tasks(
-                    data.getStringExtra(InsertTasksActivity.EXTRA_REPLY),
-                    data.getStringExtra("description"),
-                    data.getStringExtra("deadline")
+                    data.getStringExtra("name"),
+                    data.getStringExtra("deadline"),
+                    data.getStringExtra("description")
             );
             mTasksViewModel.insert(tasks);
-            Toast.makeText(
-                    getContext(),
-                    R.string.data_saved,
-                    Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(
-                    getContext(),
-                    R.string.empty_not_saved,
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), R.string.data_saved, Toast.LENGTH_LONG).show();
+        }
+
+        if (requestCode == UPDATE_WORD_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            if (data.getStringExtra("action").equals("delete")) {
+                mTasksViewModel.delete(datas.get(Integer.parseInt(data.getStringExtra("index"))));
+                Toast.makeText(getContext(), "Tasks is successfully deleted!", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -82,12 +83,13 @@ public class TasksFragment extends Fragment implements TasksListAdapter.OnNoteLi
         Intent intent = new Intent(this.getContext(), DetailTasksActivity.class);
         Bundle bundle = new Bundle();
 
+        bundle.putString("index", String.valueOf(position));
         bundle.putString("name", datas.get(position).getName());
         bundle.putString("deadline", datas.get(position).getDeadline());
         bundle.putString("description", datas.get(position).getDescription());
         intent.putExtras(bundle);
 
-        startActivity(intent);
+        startActivityForResult(intent, UPDATE_WORD_ACTIVITY_REQUEST_CODE);
     }
 
     @Override
