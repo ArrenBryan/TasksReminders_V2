@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -27,6 +30,7 @@ public class TasksFragment extends Fragment implements TasksListAdapter.OnNoteLi
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tasks, container, false);
+        setHasOptionsMenu(true);
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         TasksListAdapter adapter = new TasksListAdapter(new TasksListAdapter.TasksDiff(), this);
@@ -84,5 +88,22 @@ public class TasksFragment extends Fragment implements TasksListAdapter.OnNoteLi
         intent.putExtras(bundle);
 
         startActivity(intent);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.fragment_tasks_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.delete_all_button) {
+            mTasksViewModel.deleteAll();
+            Toast.makeText(getContext(), "All tasks has been deleted!", Toast.LENGTH_LONG).show();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

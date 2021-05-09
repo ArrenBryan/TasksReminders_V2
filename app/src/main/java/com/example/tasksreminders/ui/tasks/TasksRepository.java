@@ -33,4 +33,10 @@ public class TasksRepository {
             mTasksDao.insert(task);
         });
     }
+
+    void deleteAll() {
+        TasksRoomDatabase.databaseWriteExecutor.execute(() -> {
+            mTasksDao.deleteAll();
+        });
+    }
 }
