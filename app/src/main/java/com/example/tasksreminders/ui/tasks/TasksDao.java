@@ -6,6 +6,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -16,6 +17,9 @@ public interface TasksDao {
 
     @Delete
     void delete(Tasks task);
+
+    @Update
+    void update(Tasks task);
 
     @Query("DELETE FROM tasks_table")
     void deleteAll();

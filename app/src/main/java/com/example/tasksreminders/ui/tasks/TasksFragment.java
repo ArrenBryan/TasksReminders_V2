@@ -3,6 +3,7 @@ package com.example.tasksreminders.ui.tasks;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,10 +21,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.tasksreminders.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class TasksFragment extends Fragment implements TasksListAdapter.OnNoteListener {
-
     public static final int NEW_WORD_ACTIVITY_REQUEST_CODE = 1;
     public static final int UPDATE_WORD_ACTIVITY_REQUEST_CODE = 2;
     private TasksViewModel mTasksViewModel;
@@ -72,6 +73,27 @@ public class TasksFragment extends Fragment implements TasksListAdapter.OnNoteLi
             if (data.getStringExtra("action").equals("delete")) {
                 mTasksViewModel.delete(datas.get(Integer.parseInt(data.getStringExtra("index"))));
                 Toast.makeText(getContext(), "Tasks is successfully deleted!", Toast.LENGTH_LONG).show();
+            }
+
+            if (data.getStringExtra("action").equals("update")) {
+                Tasks old_task = datas.get(Integer.parseInt(data.getStringExtra("index")));
+
+                Tasks updated_task = new Tasks(
+                        data.getStringExtra("name"),
+                        data.getStringExtra("deadline"),
+                        data.getStringExtra("description")
+                );
+                updated_task.setId(datas.get(Integer.parseInt(data.getStringExtra("index"))).getId());
+
+                if (
+                        old_task.getId() != updated_task.getId() ||
+                                !old_task.getName().equals(updated_task.getName()) ||
+                                !old_task.getDeadline().equals(updated_task.getDeadline()) ||
+                                !old_task.getDescription().equals(updated_task.getDescription())
+                ) {
+                    Toast.makeText(getContext(), "Tasks is successfully updated!", Toast.LENGTH_LONG).show();
+                    mTasksViewModel.update(updated_task);
+                }
             }
         }
     }
