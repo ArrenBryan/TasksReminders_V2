@@ -17,7 +17,7 @@ public class TasksRepository {
     TasksRepository(Application application) {
         TasksRoomDatabase db = TasksRoomDatabase.getDatabase(application);
         mTasksDao = db.tasksDao();
-        mAllTasks = mTasksDao.getAlphabetizedWords();
+        mAllTasks = mTasksDao.getSortedTasks();
     }
 
     // Room executes all queries on a separate thread.

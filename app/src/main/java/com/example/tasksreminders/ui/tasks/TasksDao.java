@@ -25,5 +25,5 @@ public interface TasksDao {
     void deleteAll();
 
     @Query("SELECT * FROM tasks_table ORDER BY substr (deadline, 7, 10) ASC, substr (deadline, 1, 2) ASC, substr (deadline, 4, 5) ASC")
-    LiveData<List<Tasks>> getAlphabetizedWords();
+    LiveData<List<Tasks>> getSortedTasks();
 }
