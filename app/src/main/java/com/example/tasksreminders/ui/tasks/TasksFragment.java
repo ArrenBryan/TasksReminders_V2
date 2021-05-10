@@ -3,7 +3,6 @@ package com.example.tasksreminders.ui.tasks;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,15 +18,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tasksreminders.R;
+import com.example.tasksreminders.ui.profile.Profile;
+import com.example.tasksreminders.ui.profile.ProfileViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class TasksFragment extends Fragment implements TasksListAdapter.OnNoteListener {
     public static final int NEW_WORD_ACTIVITY_REQUEST_CODE = 1;
     public static final int UPDATE_WORD_ACTIVITY_REQUEST_CODE = 2;
+
     private TasksViewModel mTasksViewModel;
+    private ProfileViewModel mProfileViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -43,6 +45,11 @@ public class TasksFragment extends Fragment implements TasksListAdapter.OnNoteLi
         mTasksViewModel.getAllTasks().observe(getViewLifecycleOwner(), tasks -> {
             // Update the cached copy of the words in the adapter.
             adapter.submitList(tasks);
+        });
+
+        mProfileViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(ProfileViewModel.class);
+        mProfileViewModel.getAllProfile().observe(getViewLifecycleOwner(), profiles -> {
+            // Update the cached copy of the words in the adapter.
         });
 
         FloatingActionButton fab = view.findViewById(R.id.fab);
@@ -94,6 +101,17 @@ public class TasksFragment extends Fragment implements TasksListAdapter.OnNoteLi
                     Toast.makeText(getContext(), "Tasks is successfully updated!", Toast.LENGTH_LONG).show();
                     mTasksViewModel.update(updated_task);
                 }
+            }
+
+            if (data.getStringExtra("action").equals("mark_as_done")) {
+                List<Profile> completedTasks = mProfileViewModel.getAllProfile().getValue();
+
+                Profile profile = new Profile(completedTasks.get(0).getValue() + 1);
+                profile.setId(completedTasks.get(0).getId());
+                mProfileViewModel.update(profile);
+
+                mTasksViewModel.delete(datas.get(Integer.parseInt(data.getStringExtra("index"))));
+                Toast.makeText(getContext(), "Welldone! Your task is done now!", Toast.LENGTH_LONG).show();
             }
         }
     }

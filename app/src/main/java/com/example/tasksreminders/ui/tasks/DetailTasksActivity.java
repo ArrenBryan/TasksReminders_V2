@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,7 +13,6 @@ import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,7 +20,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tasksreminders.R;
-
 import java.util.Calendar;
 
 public class DetailTasksActivity extends AppCompatActivity {
@@ -121,6 +118,17 @@ public class DetailTasksActivity extends AppCompatActivity {
             replyIntent.putExtra("name", mName.getText().toString());
             replyIntent.putExtra("deadline", mDeadline.getText().toString());
             replyIntent.putExtra("description", mDescription.getText().toString());
+
+            setResult(RESULT_OK, replyIntent);
+
+            finish();
+        }
+
+        if (id == R.id.mark_as_done) {
+            Intent replyIntent = new Intent();
+
+            replyIntent.putExtra("action", "mark_as_done");
+            replyIntent.putExtra("index", bundle.getString("index"));
 
             setResult(RESULT_OK, replyIntent);
 
