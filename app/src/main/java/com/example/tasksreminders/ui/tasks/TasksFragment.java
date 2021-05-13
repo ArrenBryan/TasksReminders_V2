@@ -9,6 +9,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,6 +32,8 @@ public class TasksFragment extends Fragment implements TasksListAdapter.OnNoteLi
 
     private TasksViewModel mTasksViewModel;
     private ProfileViewModel mProfileViewModel;
+    private TasksListAdapter adapter;
+    private List<Tasks> datas;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -37,13 +41,14 @@ public class TasksFragment extends Fragment implements TasksListAdapter.OnNoteLi
         setHasOptionsMenu(true);
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        TasksListAdapter adapter = new TasksListAdapter(new TasksListAdapter.TasksDiff(), this);
+        adapter = new TasksListAdapter(new TasksListAdapter.TasksDiff(), this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mTasksViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(TasksViewModel.class);
         mTasksViewModel.getAllTasks().observe(getViewLifecycleOwner(), tasks -> {
             // Update the cached copy of the words in the adapter.
+            datas = tasks;
             adapter.submitList(tasks);
         });
 
@@ -64,7 +69,6 @@ public class TasksFragment extends Fragment implements TasksListAdapter.OnNoteLi
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        List<Tasks> datas = mTasksViewModel.getAllTasks().getValue();
 
         if (requestCode == NEW_WORD_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             Tasks tasks = new Tasks(
@@ -101,6 +105,7 @@ public class TasksFragment extends Fragment implements TasksListAdapter.OnNoteLi
                     Toast.makeText(getContext(), "Tasks is successfully updated!", Toast.LENGTH_LONG).show();
                     mTasksViewModel.update(updated_task);
                 }
+                this.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
             }
 
             if (data.getStringExtra("action").equals("mark_as_done")) {
@@ -118,8 +123,6 @@ public class TasksFragment extends Fragment implements TasksListAdapter.OnNoteLi
 
     @Override
     public void onNoteClick(int position) {
-        List<Tasks> datas = mTasksViewModel.getAllTasks().getValue();
-
         Intent intent = new Intent(this.getContext(), DetailTasksActivity.class);
         Bundle bundle = new Bundle();
 
@@ -144,6 +147,33 @@ public class TasksFragment extends Fragment implements TasksListAdapter.OnNoteLi
         if (id == R.id.delete_all_button) {
             mTasksViewModel.deleteAll();
             Toast.makeText(getContext(), "All tasks has been deleted!", Toast.LENGTH_LONG).show();
+        }
+
+        if (id == R.id.search_button) {
+            SearchView searchView = (SearchView) item.getActionView();
+
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    getResults(query);
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    getResults(newText);
+                    return true;
+                }
+
+                private void getResults(String newText) {
+                    String queryText = "%" + newText + "%";
+                    mTasksViewModel.getFilteredTasks(queryText).observe(getViewLifecycleOwner(), tasks -> {
+                            if (tasks == null) return;
+                            datas = tasks;
+                            adapter.submitList(tasks);
+                    });
+                }
+            });
         }
 
         return super.onOptionsItemSelected(item);

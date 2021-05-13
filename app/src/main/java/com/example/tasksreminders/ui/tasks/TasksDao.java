@@ -26,4 +26,7 @@ public interface TasksDao {
 
     @Query("SELECT * FROM tasks_table ORDER BY substr (deadline, 7, 10) ASC, substr (deadline, 1, 2) ASC, substr (deadline, 4, 5) ASC")
     LiveData<List<Tasks>> getSortedTasks();
+
+    @Query("SELECT * FROM tasks_table WHERE name LIKE :searchQuery ORDER BY substr (deadline, 7, 10) ASC, substr (deadline, 1, 2) ASC, substr (deadline, 4, 5) ASC")
+    LiveData<List<Tasks>> getSearchSortedTasks(String searchQuery);
 }

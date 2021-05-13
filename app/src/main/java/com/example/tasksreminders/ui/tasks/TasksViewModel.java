@@ -19,6 +19,8 @@ public class TasksViewModel extends AndroidViewModel {
 
     public LiveData<List<Tasks>> getAllTasks() { return mAllTasks; }
 
+    public LiveData<List<Tasks>> getFilteredTasks(String searchQuery) { return mRepository.getFilteredTasks(searchQuery); }
+
     public void insert(Tasks task) { mRepository.insert(task); }
 
     public void delete(Tasks task) { mRepository.delete(task); }

@@ -26,6 +26,10 @@ public class TasksRepository {
         return mAllTasks;
     }
 
+    LiveData<List<Tasks>> getFilteredTasks(String searchQuery) {
+        return mTasksDao.getSearchSortedTasks(searchQuery);
+    }
+
     // You must call this on a non-UI thread or your app will throw an exception. Room ensures
     // that you're not doing any long running operations on the main thread, blocking the UI.
     void insert(Tasks task) {
