@@ -10,8 +10,8 @@
         <option name="gradleJvm" value="1.8" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/app" />
+            <option value="/media/storage/Users/Bryan/Documents/Project/Programming/AndroidStudio/TasksReminders_V2" />
+            <option value="/media/storage/Users/Bryan/Documents/Project/Programming/AndroidStudio/TasksReminders_V2/app" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
